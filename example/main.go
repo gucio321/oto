@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"runtime"
-	"sync"
 	"time"
 
 	"github.com/ebitengine/oto/v3"
@@ -175,46 +173,53 @@ func run() error {
 	}
 	<-ready
 
-	var wg sync.WaitGroup
-	var players []*oto.Player
-	var m sync.Mutex
+	/*
+		var wg sync.WaitGroup
+		var players []*oto.Player
+		var m sync.Mutex
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		p := play(c, freqC, 3*time.Second, op.ChannelCount, op.Format)
-		m.Lock()
-		players = append(players, p)
-		m.Unlock()
-		time.Sleep(3 * time.Second)
-	}()
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			p := play(c, freqC, 3*time.Second, op.ChannelCount, op.Format)
+			m.Lock()
+			players = append(players, p)
+			m.Unlock()
+			time.Sleep(3 * time.Second)
+		}()
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		time.Sleep(1 * time.Second)
-		p := play(c, freqE, 3*time.Second, op.ChannelCount, op.Format)
-		m.Lock()
-		players = append(players, p)
-		m.Unlock()
-		time.Sleep(3 * time.Second)
-	}()
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			time.Sleep(1 * time.Second)
+			p := play(c, freqE, 3*time.Second, op.ChannelCount, op.Format)
+			m.Lock()
+			players = append(players, p)
+			m.Unlock()
+			time.Sleep(3 * time.Second)
+		}()
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		time.Sleep(2 * time.Second)
-		p := play(c, freqG, 3*time.Second, op.ChannelCount, op.Format)
-		m.Lock()
-		players = append(players, p)
-		m.Unlock()
-		time.Sleep(3 * time.Second)
-	}()
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			time.Sleep(2 * time.Second)
+			p := play(c, freqG, 3*time.Second, op.ChannelCount, op.Format)
+			m.Lock()
+			players = append(players, p)
+			m.Unlock()
+			time.Sleep(3 * time.Second)
+		}()
 
-	wg.Wait()
+		wg.Wait()
 
-	// Pin the players not to GC the players.
-	runtime.KeepAlive(players)
+		// Pin the players not to GC the players.
+		runtime.KeepAlive(players)
+	*/
+	for {
+		fmt.Println("--")
+		play(c, freqC, 250*time.Millisecond, op.ChannelCount, op.Format)
+		time.Sleep(500 * time.Millisecond)
+	}
 
 	return nil
 }
